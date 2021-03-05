@@ -30,7 +30,7 @@ export const loginUser = createAsyncThunk('login', async ({email, password}: Reg
                 toast.success("Hello! You're Sign in")
             })
         const userData = await usersCollection.doc(auth.currentUser?.uid).get();
-        console.log(userData,"userData")
+        const getName = userData.data()?.name
     } catch (error) {
         console.log(error)
         toast.warning(error.message)
