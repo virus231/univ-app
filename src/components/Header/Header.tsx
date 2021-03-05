@@ -108,7 +108,7 @@ export const Header:React.FC = () => {
                                                     <ClickAwayListener onClickAway={handleClose}>
                                                         <MenuList autoFocusItem={open} id="menu-list-grow" onKeyDown={handleListKeyDown}>
                                                             <MenuItem onClick={handleClose}>
-                                                                <Link component={LinkBehavior}>Profile</Link>
+                                                                <Link component={LinkBehavior}>Мой профиль</Link>
                                                             </MenuItem>
                                                             <MenuItem onClick={handleClose}>My account</MenuItem>
                                                             <MenuItem onClick={handleClose}>Logout</MenuItem>

@@ -22,7 +22,7 @@ export const SignUp = () => {
     const { register, handleSubmit,control, errors } = useForm<RegisterBody>();
     const dispatch = useDispatch();
     const history = useHistory();
-    const {error, isAuth} = useSelector(authSelector)
+    const {isAuth} = useSelector(authSelector)
 
     const onSubmit = (data: RegisterBody) => {
         dispatch(registerUser(data))
