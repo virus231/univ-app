@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { RegisterBody} from "../../utils/interfaces";
-import { auth, usersCollection } from "../../services/firebase";
+import { auth, usersCollection, currentUser } from "../../services/firebase";
 // import { userExist } from "./authSlice";
 import { toast } from "react-toastify";
 
@@ -29,6 +29,8 @@ export const loginUser = createAsyncThunk('login', async ({email, password}: Reg
             .then((userCredential) => {
                 toast.success("Hello! You're Sign in")
             })
+        const userData = await usersCollection.doc(auth.currentUser?.uid).get();
+        console.log(userData,"userData")
     } catch (error) {
         console.log(error)
         toast.warning(error.message)
