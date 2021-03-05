@@ -1,0 +1,30 @@
+.header-wrapper {
+  padding: 20px 40px;
+}
+
+.signup-wrapper, .login-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 70vh;
+
+  & .container {
+    justify-content: center;
+  }
+}
+
+.form-wrapper {
+  text-align: center;
+}
+
+.go-home {
+  display: flex;
+  align-items: center;
+  font-size: 17px;
+  text-decoration: none;
+  color: #3D8BE4;
+
+  & svg {
+    margin-right: 10px;
+  }
+}

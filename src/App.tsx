@@ -1,58 +1,60 @@
-import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
-import './App.css';
+import React, {lazy, Suspense} from 'react';
+import {
+  Switch,
+  Route,
+  withRouter,
+} from "react-router-dom";
+import {Header} from './components/Header/Header'
+import { Home } from './pages/Home';
+import Backdrop from '@material-ui/core/Backdrop';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { useSelector } from 'react-redux'
+import { authSelector } from './features/auth/authSlice';
+import LinearProgress from '@material-ui/core/LinearProgress';
+import Alert from '@material-ui/lab/Alert';
+import { ToastContainer } from 'react-toastify';
+import "react-toastify/scss/main.scss"
+import PrivateRoute from './components/PrivateRoute';
+import './App.scss';
+import { Spinner } from './components/Spinner';
+import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-        </span>
-      </header>
-    </div>
+const useStyles = makeStyles((theme: Theme) =>
+    createStyles({
+        backdrop: {
+            zIndex: theme.zIndex.drawer + 1,
+            color: '#fff',
+        },
+    }),
+);
+
+const SignUp = lazy(() => import('./features/auth/SignUp/SignUp').then(({ SignUp }) => ({ default: SignUp })))
+const LogIn = lazy(() => import('./features/auth/LogIn/LogIn').then(({ LogIn }) => ({ default: LogIn })))
+const Profile = lazy(() => import('./pages/Profile/Profile').then(({ Profile }) => ({ default: Profile })))
+
+function App(props: any) {
+    const shouldShowHeader = props.location.pathname !== '/signup';
+    const {loading} = useSelector(authSelector)
+    const classes = useStyles();
+
+    return (
+      <Suspense fallback={<Spinner/>}>
+          <Backdrop className={classes.backdrop} open={!!loading}>
+              <CircularProgress color="inherit" />
+          </Backdrop>
+        <div className="App">
+          {shouldShowHeader && <Header />}
+          <ToastContainer/>
+            <Switch>
+                <Route exact path="/" component={Home} />
+                <Route path='/auth/login' component={LogIn}/>
+                <Route path='/signup' component={SignUp}/>
+                <PrivateRoute path='/profile' component={Profile}/>
+            </Switch>
+        </div>
+      </Suspense>
+      
   );
 }
 
-export default App;
+export default withRouter(App);

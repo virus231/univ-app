@@ -1,0 +1,54 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  overflow: hidden;
+}
+
+.MuiFormControl-root {
+  width: 100%;
+  margin-bottom: 30px !important;
+}
+
+//Spinner
+.wrapper {
+  margin: 0 auto;
+  margin-top: calc((100vh - 75vmin) / 2);
+  overflow: hidden;
+  position: relative;
+  height: 75vmin;
+  width: 75vmin;
+}
+
+.ring{
+  height: 10%;
+  width: 10%;
+  border: 1vmin solid black;
+  border-radius: 100vmin;
+  position: absolute;
+}
+
+$rings: 9;
+
+@for $i from 1 through $rings {
+  .ring_#{$i} {
+    height: #{percentage($i * (1 / $rings))};
+    width: #{percentage($i * (1 / $rings))};
+    top: #{percentage(0.5 - ($i * (1 / $rings) / 2))};
+    left: #{percentage(0.5 - ($i * (1 / $rings) / 2))};
+    border-color: #006ac6 transparent transparent transparent;
+    animation: ringAnim #{$rings / $i}s infinite linear;
+    border-width: #{ $i * (4 / $rings)}vmin;
+  }
+
+
+  @keyframes ringAnim {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+}
+
+
