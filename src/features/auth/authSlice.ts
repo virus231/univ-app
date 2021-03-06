@@ -1,20 +1,34 @@
-import {AuthResponse, RegisterBody} from "../../utils/interfaces";
-import {createSlice, PayloadAction, createAction} from "@reduxjs/toolkit";
-import {AppThunk, RootState} from "../../app/store";
+import {AuthResponse} from "../../utils/interfaces";
+import {createSlice, createAction} from "@reduxjs/toolkit";
+import {RootState} from "../../app/store";
 import {loginUser, registerUser} from './thunks'
 
 const initialState: AuthResponse = {
     email: '',
     id: 0,
-    user: '',
+    user: null,
     isAuth: false,
     username: '',
     error: null,
     loading: false
 }
 
-export const defaultError = 'Somthing went wrong!'
+export const defaultError = 'Something went wrong!'
 
+export const getName = createAction('getName', function getName(name: string) {
+    return {
+        payload: {
+            name
+        }
+    }
+})
+export const getUser = createAction('getUser', function getUser(user: any) {
+    return {
+        payload: {
+            user
+        }
+    }
+})
 
 export const authSlice = createSlice({
     name: 'auth',
@@ -47,6 +61,13 @@ export const authSlice = createSlice({
         }).addCase(loginUser.pending, (state) => {
             state.loading = true
             state.error = null
+        }).addCase(getName, (state,action) => {
+            const {name} = action.payload
+            state.username = name
+        }).addCase(getUser, (state,action) => {
+            const {user} = action.payload
+            console.log(user)
+            state.user = user
         })
         
     }

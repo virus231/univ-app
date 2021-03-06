@@ -68,6 +68,7 @@ export const Header:React.FC = () => {
     // return focus to the button when we transitioned from !open -> open
     const prevOpen = React.useRef(open);
     React.useEffect(() => {
+
         if (prevOpen.current === true && open === false) {
             anchorRef.current!.focus();
         }
@@ -96,7 +97,7 @@ export const Header:React.FC = () => {
                                         aria-haspopup="true"
                                         onClick={handleToggle}
                                     >
-                                        Toggle Menu Grow
+                                        {username}
                                     </Button>
                                     <Popper open={open} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
                                         {({ TransitionProps, placement }) => (
@@ -111,7 +112,7 @@ export const Header:React.FC = () => {
                                                                 <Link component={LinkBehavior}>Мой профиль</Link>
                                                             </MenuItem>
                                                             <MenuItem onClick={handleClose}>My account</MenuItem>
-                                                            <MenuItem onClick={handleClose}>Logout</MenuItem>
+                                                            <MenuItem onClick={handleClose}>Вийти</MenuItem>
                                                         </MenuList>
                                                     </ClickAwayListener>
                                                 </Paper>

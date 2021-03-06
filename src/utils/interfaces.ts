@@ -5,7 +5,7 @@ export interface AuthResponse {
     isAuth: boolean,
     error: string | null,
     loading: boolean,
-    user: string
+    user: null,
 }
 
 export interface RegisterBody{
@@ -14,10 +14,6 @@ export interface RegisterBody{
     password: string
 }
 
-export interface StateHandlers {
-    isAuth: boolean,
-    currentUser: CurrentUser
-}
 
 export interface CurrentUser {
     id: string
