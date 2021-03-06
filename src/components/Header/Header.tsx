@@ -3,11 +3,11 @@ import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Popover from '@material-ui/core/Popover';
 import Button from '@material-ui/core/Button';
-import {Link as RouteLink, LinkProps as RouterLinkProps } from 'react-router-dom'
+import {Link as RouteLink, LinkProps as RouterLinkProps, useHistory } from 'react-router-dom'
 import Link from '@material-ui/core/Link';
 import logo from '../../assets/img/logo.png'
 import Avatar from '@material-ui/core/Avatar';
-import { useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {authSelector} from "../../features/auth/authSlice";
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Grow from '@material-ui/core/Grow';
@@ -16,6 +16,7 @@ import Popper from '@material-ui/core/Popper';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import { Omit } from '@material-ui/types';
+import {logoutUser} from "../../features/auth/thunks";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -40,6 +41,8 @@ const LinkBehavior = React.forwardRef<any, Omit<RouterLinkProps, 'to'>>((props, 
 
 export const Header:React.FC = () => {
     const classes = useStyles();
+    const history = useHistory();
+    const dispatch = useDispatch();
     const {isAuth, username} =  useSelector(authSelector)
     const preventDefault = (event: React.SyntheticEvent) => event.preventDefault();
 
@@ -54,8 +57,19 @@ export const Header:React.FC = () => {
         if (anchorRef.current && anchorRef.current.contains(event.target as HTMLElement)) {
             return;
         }
-
         setOpen(false);
+    };
+
+    const handleCloseLogout = (event: React.MouseEvent<EventTarget>) => {
+        if (anchorRef.current && anchorRef.current.contains(event.target as HTMLElement)) {
+            return;
+        }
+        setOpen(false);
+
+        dispatch(logoutUser())
+        if (history.location.pathname !== '/') {
+            history.push('/')
+        }
     };
 
     function handleListKeyDown(event: React.KeyboardEvent) {
@@ -112,7 +126,7 @@ export const Header:React.FC = () => {
                                                                 <Link component={LinkBehavior}>Мой профиль</Link>
                                                             </MenuItem>
                                                             <MenuItem onClick={handleClose}>My account</MenuItem>
-                                                            <MenuItem onClick={handleClose}>Вийти</MenuItem>
+                                                            <MenuItem onClick={handleCloseLogout}>Вийти</MenuItem>
                                                         </MenuList>
                                                     </ClickAwayListener>
                                                 </Paper>

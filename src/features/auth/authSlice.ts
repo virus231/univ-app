@@ -1,7 +1,7 @@
 import {AuthResponse} from "../../utils/interfaces";
 import {createSlice, createAction} from "@reduxjs/toolkit";
 import {RootState} from "../../app/store";
-import {loginUser, registerUser} from './thunks'
+import {loginUser, logoutUser, registerUser} from './thunks'
 
 const initialState: AuthResponse = {
     email: '',
@@ -48,8 +48,7 @@ export const authSlice = createSlice({
         }).addCase(registerUser.rejected, (state, { error }) => {
             state.error = error.message ?? defaultError
             state.loading = false
-        })
-            .addCase(loginUser.rejected, (state, { error }) => {
+        }).addCase(loginUser.rejected, (state, { error }) => {
             state.loading = false
             state.error = error.message ?? defaultError
         }).addCase(loginUser.fulfilled, (state, action) => {
@@ -68,10 +67,23 @@ export const authSlice = createSlice({
             const {user} = action.payload
             console.log(user)
             state.user = user
+        }).addCase(logoutUser.fulfilled, (state,action) => {
+            state.email = ''
+            state.username = ''
+            state.isAuth = false
+            state.loading = false
+            state.user = null
+        }).addCase(logoutUser.pending, (state) => {
+            state.loading = true
+            state.error = null
+        }).addCase(logoutUser.rejected, (state, {error}) => {
+            state.loading = false
+            state.error = error.message ?? defaultError
         })
         
     }
 })
+
 
 // export const {userExist} = authSlice.actions
 export const authSelector = (state: RootState) => state.auth
