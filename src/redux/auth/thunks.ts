@@ -1,15 +1,15 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { RegisterBody} from "../../utils/interfaces";
-import { auth, usersCollection, currentUser } from "../../services/firebase";
+import { auth, usersCollection } from "../../services/firebase";
 // import { userExist } from "./authSlice";
 import { toast } from "react-toastify";
-import { getName, getUser } from "./authSlice";
+import { setName, setUser } from "./actions";
 
 
 export const registerUser = createAsyncThunk('register', async ({email, password,name}: RegisterBody, {dispatch}) => {
     try {
         const createdUserResult = await auth.createUserWithEmailAndPassword(email, password)
-        dispatch(getUser(createdUserResult))
+        dispatch(setUser(createdUserResult))
 
         await usersCollection.doc(auth.currentUser?.uid).set({
             email: email.toLowerCase(),
@@ -29,11 +29,11 @@ export const registerUser = createAsyncThunk('register', async ({email, password
 export const loginUser = createAsyncThunk('login', async ({email, password}: RegisterBody, {dispatch}) => {
     try {
         const user = await auth.signInWithEmailAndPassword(email, password)
-        dispatch(getUser(user))
+        dispatch(setUser(user))
 
         const userData = await usersCollection.doc(auth.currentUser?.uid).get();
         const name = userData.data()?.name
-        dispatch(getName(name))
+        dispatch(setName(name))
 
         toast.success("Hello! You're Sign in")
     } catch (error) {
@@ -46,7 +46,7 @@ export const loginUser = createAsyncThunk('login', async ({email, password}: Reg
 export const logoutUser = createAsyncThunk('logout', async (_,{dispatch}) => {
     await auth.signOut()
         .then(() => {
-            dispatch(getUser(null))
+            dispatch(setUser(null))
             toast.success("Goodbye!")
         }).catch((err) => {
             console.log('err', err)

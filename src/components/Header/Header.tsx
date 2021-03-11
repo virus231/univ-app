@@ -8,7 +8,7 @@ import Link from '@material-ui/core/Link';
 import logo from '../../assets/img/logo.png'
 import Avatar from '@material-ui/core/Avatar';
 import {useDispatch, useSelector} from 'react-redux';
-import {authSelector} from "../../features/auth/authSlice";
+import {authSelector} from "../../redux/auth/selectors";
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Grow from '@material-ui/core/Grow';
 import Paper from '@material-ui/core/Paper';
@@ -16,7 +16,7 @@ import Popper from '@material-ui/core/Popper';
 import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import { Omit } from '@material-ui/types';
-import {logoutUser} from "../../features/auth/thunks";
+import {logoutUser} from "../../redux/auth/thunks";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

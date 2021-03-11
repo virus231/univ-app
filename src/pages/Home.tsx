@@ -1,6 +1,6 @@
 import React from 'react';
 import {useSelector} from 'react-redux'
-import { authSelector } from '../features/auth/authSlice';
+import { authSelector } from '../redux/auth/selectors';
 
 
 export const Home = () => {

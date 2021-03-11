@@ -1,7 +1,7 @@
 import {AuthResponse} from "../../utils/interfaces";
 import {createSlice, createAction} from "@reduxjs/toolkit";
-import {RootState} from "../../app/store";
 import {loginUser, logoutUser, registerUser} from './thunks'
+import {setUser, setName} from './actions'
 
 const initialState: AuthResponse = {
     email: '',
@@ -15,20 +15,6 @@ const initialState: AuthResponse = {
 
 export const defaultError = 'Something went wrong!'
 
-export const getName = createAction('getName', function getName(name: string) {
-    return {
-        payload: {
-            name
-        }
-    }
-})
-export const getUser = createAction('getUser', function getUser(user: any) {
-    return {
-        payload: {
-            user
-        }
-    }
-})
 
 export const authSlice = createSlice({
     name: 'auth',
@@ -60,10 +46,10 @@ export const authSlice = createSlice({
         }).addCase(loginUser.pending, (state) => {
             state.loading = true
             state.error = null
-        }).addCase(getName, (state,action) => {
+        }).addCase(setName, (state,action) => {
             const {name} = action.payload
             state.username = name
-        }).addCase(getUser, (state,action) => {
+        }).addCase(setUser, (state,action) => {
             const {user} = action.payload
             console.log(user)
             state.user = user
@@ -86,5 +72,4 @@ export const authSlice = createSlice({
 
 
 // export const {userExist} = authSlice.actions
-export const authSelector = (state: RootState) => state.auth
 export default authSlice.reducer;

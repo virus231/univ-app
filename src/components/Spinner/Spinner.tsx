@@ -1,6 +1,5 @@
 import React from 'react';
 
-
 export const Spinner = () => (
     <div className='wrapper'>
         <div className='ring ring_1'></div>
