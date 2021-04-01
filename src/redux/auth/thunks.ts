@@ -1,10 +1,39 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { RegisterBody} from "../../utils/interfaces";
-import { auth, usersCollection } from "../../services/firebase";
+import { auth, usersCollection, provider } from "../../services/firebase";
 // import { userExist } from "./authSlice";
 import { toast } from "react-toastify";
 import { setName, setUser } from "./actions";
 
+export const signInWithGoogle = createAsyncThunk('signInWithGoogle', async(_,{dispatch}) => {
+    try {
+        await auth.signInWithPopup(provider)
+            .then((result) => {
+                /** @type {firebase.auth.OAuthCredential} */
+                var credential = result.credential;
+
+                // This gives you a Google Access Token. You can use it to access the Google API.
+                // The signed-in user info.
+                var user = result.user;
+                dispatch(setUser(user))
+                dispatch(setName(user!.displayName))
+
+            }).catch((error) => {
+                // Handle Errors here.
+                var errorCode = error.code;
+                var errorMessage = error.message;
+                // The email of the user's account used.
+                var email = error.email;
+                // The firebase.auth.AuthCredential type that was used.
+                var credential = error.credential;
+                // ...
+            });
+
+    } catch (error) {
+        toast.warning(error.message)
+        throw error
+    }
+})
 
 export const registerUser = createAsyncThunk('register', async ({email, password,name}: RegisterBody, {dispatch}) => {
     try {

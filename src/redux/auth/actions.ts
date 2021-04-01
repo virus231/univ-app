@@ -1,7 +1,7 @@
 import {createAction} from "@reduxjs/toolkit";
 
 
-export const setName = createAction('getName', function getName(name: string) {
+export const setName = createAction('getName', function getName(name: string | object | null) {
     return {
         payload: {
             name

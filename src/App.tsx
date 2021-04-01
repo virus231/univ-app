@@ -7,16 +7,16 @@ import {
 import {Header} from './components/Header/Header'
 import { Home } from './pages/Home';
 import Backdrop from '@material-ui/core/Backdrop';
-import CircularProgress from '@material-ui/core/CircularProgress';
 import { useSelector } from 'react-redux'
 import { authSelector } from './redux/auth/selectors';
 import { ToastContainer } from 'react-toastify';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import "react-toastify/scss/main.scss"
 import PrivateRoute from './components/PrivateRoute/PrivateRoute';
-import './App.scss';
 import { Spinner } from './components/Spinner/Spinner';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
-import { auth } from './services/firebase';
+import { Container } from '@material-ui/core';
+import './App.scss';
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
@@ -32,7 +32,7 @@ const LogIn = lazy(() => import('./redux/auth/LogIn/LogIn').then(({ LogIn }) => 
 const Profile = lazy(() => import('./pages/Profile/Profile').then(({ Profile }) => ({ default: Profile })))
 
 function App(props: any) {
-    const shouldShowHeader = props.location.pathname !== '/signup';
+    // const shouldShowHeader = props.location.pathname !== '/signup';
     const {loading} = useSelector(authSelector)
     const classes = useStyles();
 
@@ -43,13 +43,15 @@ function App(props: any) {
             <CircularProgress color="inherit" />
         </Backdrop>
         <div className="App">
-            {shouldShowHeader && <Header />}
+            <Header/>
             <ToastContainer/>
             <Switch>
-                <Route exact path="/" component={Home} />
-                <Route path='/auth/login' component={LogIn}/>
-                <Route path='/signup' component={SignUp}/>
-                <PrivateRoute path='/profile' component={Profile}/>
+                <Container>
+                    <Route exact path="/" component={Home} />
+                    <Route path='/auth/login' component={LogIn}/>
+                    <Route path='/signup' component={SignUp}/>
+                    <PrivateRoute path='/profile' component={Profile}/>
+                </Container>
             </Switch>
         </div>
       </Suspense>

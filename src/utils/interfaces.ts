@@ -1,7 +1,7 @@
 export interface AuthResponse {
     id: number,
     email: string,
-    username: string,
+    username: string | null | object,
     isAuth: boolean,
     error: string | null,
     loading: boolean,

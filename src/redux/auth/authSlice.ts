@@ -1,6 +1,6 @@
 import {AuthResponse} from "../../utils/interfaces";
-import {createSlice, createAction} from "@reduxjs/toolkit";
-import {loginUser, logoutUser, registerUser} from './thunks'
+import {createSlice} from "@reduxjs/toolkit";
+import {loginUser, logoutUser, registerUser, signInWithGoogle} from './thunks'
 import {setUser, setName} from './actions'
 
 const initialState: AuthResponse = {
@@ -65,6 +65,16 @@ export const authSlice = createSlice({
         }).addCase(logoutUser.rejected, (state, {error}) => {
             state.loading = false
             state.error = error.message ?? defaultError
+        }).addCase(signInWithGoogle.fulfilled, (state, action) => {
+            state.isAuth = true
+            state.loading = false
+            state.error = null
+        }).addCase(signInWithGoogle.rejected, (state, {error}) => {
+            state.loading = false
+            state.error = error.message ?? defaultError
+        }).addCase(signInWithGoogle.pending, (state) => {
+            state.loading = true
+            state.error = null
         })
         
     }

@@ -20,3 +20,6 @@ export const currentUser = auth.currentUser
 //Firebase collections
 export const usersCollection = db.collection('Users')
 export const storage = firebase.storage()
+
+//Providers
+export const provider = new firebase.auth.GoogleAuthProvider();

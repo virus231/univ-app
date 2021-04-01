@@ -1,7 +1,8 @@
 import React from 'react';
 import Grid from "@material-ui/core/Grid";
 import {Link, useHistory} from "react-router-dom";
-import logo from "../../../assets/img/logo.png";
+import Box from '@material-ui/core/Box';
+
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
@@ -11,8 +12,9 @@ import Button from "@material-ui/core/Button";
 import {RegisterBody} from "../../../utils/interfaces";
 import {loginUser} from "../thunks";
 import {useDispatch, useSelector} from "react-redux";
-import '../SignUp/SignUp.scss'
 import {authSelector} from "../selectors";
+import '../SignUp/SignUp.scss'
+
 
 export const LogIn = () => {
     const dispatch = useDispatch();
@@ -32,7 +34,7 @@ export const LogIn = () => {
         <>
             <section className="login-wrapper">
                 <Grid className="container" container>
-                    <Grid item lg={3}>
+                    <Grid item lg={4}>
                         <Card>
                             <CardActions>
                                 <Link className="go-home" to="/">
@@ -42,6 +44,10 @@ export const LogIn = () => {
                                     Назад
                                 </Link>
                             </CardActions>
+                            <Box fontSize={22} textAlign="center" lineHeight={3}>
+                                <h3>Вхід</h3>
+                            </Box>
+
                             <CardContent>
                                 <form onSubmit={handleSubmit(onSubmit)}>
                                     <Controller
@@ -96,7 +102,7 @@ export const LogIn = () => {
                                         }
                                     />
 
-                                    <Button type="submit"  fullWidth size="medium" variant="contained" color="primary">
+                                    <Button className="btn-blue" type="submit" fullWidth size="medium" variant="contained">
                                         Далее
                                     </Button>
                                 </form>

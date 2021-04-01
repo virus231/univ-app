@@ -1,7 +1,6 @@
 import React from 'react';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
-import Popover from '@material-ui/core/Popover';
 import Button from '@material-ui/core/Button';
 import {Link as RouteLink, LinkProps as RouterLinkProps, useHistory } from 'react-router-dom'
 import Link from '@material-ui/core/Link';
@@ -17,6 +16,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import MenuList from '@material-ui/core/MenuList';
 import { Omit } from '@material-ui/types';
 import {logoutUser} from "../../redux/auth/thunks";
+import { deepPurple } from '@material-ui/core/colors';
+import './Header.scss'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -29,7 +30,11 @@ const useStyles = makeStyles((theme: Theme) =>
         padding: '20px 30px',
         alignItems: 'center',
       },
-    }
+    },
+      purple: {
+          color: theme.palette.getContrastText(deepPurple[500]),
+          backgroundColor: deepPurple[500],
+      },
   }),
 );
 
@@ -83,7 +88,7 @@ export const Header:React.FC = () => {
     const prevOpen = React.useRef(open);
     React.useEffect(() => {
 
-        if (prevOpen.current === true && open === false) {
+        if (prevOpen.current && !open) {
             anchorRef.current!.focus();
         }
 
@@ -111,7 +116,11 @@ export const Header:React.FC = () => {
                                         aria-haspopup="true"
                                         onClick={handleToggle}
                                     >
-                                        {username}
+                                        <Avatar alt="Cindy Baker" src="/static/images/avatar/3.jpg" />
+                                        <span>{username}</span>
+                                        <svg width="11" height="7" viewBox="0 0 11 7" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M1 1.5L5.5 6L10 1.5" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
                                     </Button>
                                     <Popper open={open} anchorEl={anchorRef.current} role={undefined} transition disablePortal>
                                         {({ TransitionProps, placement }) => (
@@ -135,10 +144,17 @@ export const Header:React.FC = () => {
                                     </Popper>
                                 </>
                             ) : (
-                                <div>
+                                <div className="d-flex align-items-center">
+                                    <span>
+                                        <svg width="28" height="30" viewBox="0 0 28 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M1 7.5C3.48368 3.59267 7.85091 1 12.8237 1C20.5557 1 26.8237 7.26801 26.8237 15C26.8237 22.732 20.5557 29 12.8237 29C7.85091 29 3.48368 26.4073 1 22.5" stroke="#3D8BE4"/>
+                                            <path d="M7.82422 9L13.8242 15L7.82422 21" stroke="#3D8BE4"/>
+                                        </svg>
+                                    </span>
                                     <RouteLink to="/auth/login">
                                         Войти
                                     </RouteLink>
+                                    <span>/</span>
                                     <RouteLink to="/signup">
                                         Зарегистрироваться
                                     </RouteLink>
