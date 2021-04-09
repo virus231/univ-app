@@ -1,24 +1,26 @@
 import React from 'react';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
-import MenuList from '@material-ui/core/MenuList';
-import MenuItem from '@material-ui/core/MenuItem';
-import Paper from '@material-ui/core/Paper';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
-import DraftsIcon from '@material-ui/icons/Drafts';
-import SendIcon from '@material-ui/icons/Send';
-import PriorityHighIcon from '@material-ui/icons/PriorityHigh';
 import { Avatar } from '../../components/Avatar';
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
 import {useSelector} from "react-redux";
-import {authSelector} from "../../redux/auth/selectors";
+import {authSelector} from "../../redux/selectors";
+import { ProfileSettings } from './ProfileSettings/ProfileSettings';
 
 
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
+        tabs: {
+            textTransform: 'capitalize',
+            textAlign: 'left',
+            span: {
+                textAlign: 'left'
+            }
+        },
         avatar: {
-            textAlign: 'center',
             cursor: 'pointer',
             color: 'blue',
         },
@@ -30,16 +32,53 @@ const useStyles = makeStyles((theme: Theme) =>
             fontWeight: 'bold',
             fontSize: '22px',
             color: '#000000',
-            textAlign: 'center'
         },
-
     }),
 );
 
+interface TabPanelProps {
+    children?: React.ReactNode;
+    index: any;
+    value: any;
+}
+
+
+function TabPanel(props: TabPanelProps) {
+    const { children, value, index, ...other } = props;
+
+    return (
+        <div
+            role="tabpanel"
+            hidden={value !== index}
+            id={`vertical-tabpanel-${index}`}
+            aria-labelledby={`vertical-tab-${index}`}
+            {...other}
+        >
+            {value === index && (
+                <Box p={3}>
+                    <Typography>{children}</Typography>
+                </Box>
+            )}
+        </div>
+    );
+}
+
+
+function a11yProps(index: any) {
+    return {
+        id: `vertical-tab-${index}`,
+        'aria-controls': `vertical-tabpanel-${index}`,
+    };
+}
 
 export const Profile = () => {
     const classes = useStyles();
     const {username} =  useSelector(authSelector)
+    const [value, setValue] = React.useState(0);
+
+    const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
+        setValue(newValue);
+    };
     const [avatarUrl, setAvatarUrl] = React.useState<string>(
         'https://sun2-3.userapi.com/s/v1/if1/CAR1Aao3yIica7xq77xIIMMTn29CME-cE5JSJBc8OTNVt29JQjnhR0ZsX_9IO-AzgwVbfgB6.jpg?size=200x0&quality=96&crop=138,44,1048,1048&ava=1',
     );
@@ -59,6 +98,7 @@ export const Profile = () => {
         }
     }, []);
 
+
     return (
         <>
             <Box my={10}>
@@ -67,7 +107,7 @@ export const Profile = () => {
                 </Grid>
             </Box>
             <Grid container alignItems="flex-start" spacing={3}>
-                <Grid item xs={12} sm={3} md={3}>
+                <Grid  item xs={12} sm={3} md={3}>
                     <div className={classes.avatar}>
                         <div>
                             <Avatar width="120px" height="120px" src={avatarUrl} />
@@ -82,34 +122,33 @@ export const Profile = () => {
                     <Box my={3}>
                         <div className={classes.userName}>{username}</div>
                     </Box>
-                    <Paper>
-                        <MenuList>
-                            <MenuItem>
-                                <ListItemIcon>
-                                    <SendIcon fontSize="small" />
-                                </ListItemIcon>
-                                <Typography variant="inherit" noWrap>Мои материалы</Typography>
-                            </MenuItem>
-                            <MenuItem>
-                                <ListItemIcon>
-                                    <PriorityHighIcon fontSize="small" />
-                                </ListItemIcon>
-                                <Typography variant="inherit" noWrap>Обучение</Typography>
-                            </MenuItem>
-                            <MenuItem>
-                                <ListItemIcon>
-                                    <DraftsIcon fontSize="small" />
-                                </ListItemIcon>
-                                <Typography variant="inherit" noWrap>
-                                    Настройки
-                                </Typography>
-                            </MenuItem>
-                        </MenuList>
-                    </Paper>
+                    <Tabs
+                        orientation="vertical"
+                        variant="scrollable"
+                        value={value}
+                        onChange={handleChange}
+                        aria-label="Vertical tabs example"
 
+                    >
+                        <Tab className={classes.tabs} label="Обучение" {...a11yProps(0)} />
+                        <Tab className={classes.tabs} label="Мои материалы" {...a11yProps(1)} />
+                        <Tab className={classes.tabs} label="Настройки" {...a11yProps(2)} />
+                        <Tab className={classes.tabs} label="Выйти" {...a11yProps(3)} />
+                    </Tabs>
                 </Grid>
                 <Grid item xs={12} sm={8} md={8}>
-                    right
+                    <TabPanel value={value} index={0}>
+                        Обучение
+                    </TabPanel>
+                    <TabPanel value={value} index={1}>
+                        Мои материалы
+                    </TabPanel>
+                    <TabPanel value={value} index={2}>
+                        <ProfileSettings/>
+                    </TabPanel>
+                    <TabPanel value={value} index={3}>
+                        Выйти
+                    </TabPanel>
                 </Grid>
             </Grid>
 

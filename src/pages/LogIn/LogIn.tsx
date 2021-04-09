@@ -1,57 +1,38 @@
 import React from 'react';
-import {
-    GoogleLoginButton,
-} from "react-social-login-buttons";
 import Grid from "@material-ui/core/Grid";
 import {Link, useHistory} from "react-router-dom";
-import Card from '@material-ui/core/Card';
-import TextField from '@material-ui/core/TextField';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
-import { useForm, Controller } from "react-hook-form";
-import {AuthResponse, RegisterBody} from '../../../utils/interfaces';
-import Button from '@material-ui/core/Button';
-import { useSelector, useDispatch } from 'react-redux';
-import {registerUser, signInWithGoogle} from '../thunks';
-import {authSelector} from "../selectors";
-import Box from "@material-ui/core/Box";
-import './SignUp.scss'
-import { auth, provider } from '../../../services/firebase';
+import Box from '@material-ui/core/Box';
+
+import Card from "@material-ui/core/Card";
+import CardActions from "@material-ui/core/CardActions";
+import CardContent from "@material-ui/core/CardContent";
+import {Controller, useForm} from "react-hook-form";
+import TextField from "@material-ui/core/TextField";
+import Button from "@material-ui/core/Button";
+import {RegisterBody} from "../../utils/interfaces";
+import {loginUser} from "../../redux/actions/thunks";
+import {useDispatch, useSelector} from "react-redux";
+import {authSelector} from "../../redux/selectors";
+import '../SignUp/SignUp.scss'
 
 
-export const SignUp = () => {
-    const { register, handleSubmit,control, errors } = useForm<RegisterBody>();
+export const LogIn = () => {
     const dispatch = useDispatch();
+    const { register, handleSubmit,control, errors } = useForm<RegisterBody>();
     const history = useHistory();
-    const {isAuth} = useSelector(authSelector)
-
-    const signInGoogle = () => {
-        dispatch(signInWithGoogle())
-    }
+    const { isAuth } = useSelector(authSelector)
 
     const onSubmit = (data: RegisterBody) => {
-        dispatch(registerUser(data))
+        dispatch(loginUser(data))
     }
 
     if(isAuth) {
-        history.push('/')
+        history.push('/profile')
     }
-
 
     return (
         <>
-            {/*<header className="header-wrapper">*/}
-            {/*    <Grid className="container" container spacing={6}>*/}
-            {/*        <Grid item xs={12} lg={12}>*/}
-            {/*            <div>*/}
-            {/*                <Link to="/">*/}
-            {/*                    <img src={logo} alt="Logo"/>*/}
-            {/*                </Link>*/}
-            {/*            </div>*/}
-            {/*        </Grid>*/}
-            {/*    </Grid>*/}
-            {/*</header>*/}
-            <section className="signup-wrapper">
+            <section className="login-wrapper">
                 <Grid className="container" container>
                     <Grid item lg={4}>
                         <Card>
@@ -64,34 +45,11 @@ export const SignUp = () => {
                                 </Link>
                             </CardActions>
                             <Box fontSize={22} textAlign="center" lineHeight={3}>
-                                <h3>Реєстрація</h3>
+                                <h3>Вхід</h3>
                             </Box>
+
                             <CardContent>
                                 <form onSubmit={handleSubmit(onSubmit)}>
-                                    <Controller
-                                        name='name'
-                                        ref={register}
-                                        control={control}
-                                        rules={{
-                                            required: "Name required",
-                                            pattern: {
-                                                value: /^[a-zA-Z]{2,40}( [a-zA-Z]{2,40})+$/,
-                                                message: 'Invalid name'
-                                            }
-                                        }}
-                                        as={
-                                            <TextField
-                                                error={!!errors.name}
-                                                id="outlined"
-                                                label="Full Name"
-                                                placeholder="Full Name"
-                                                variant="outlined"
-                                                fullWidth
-                                                helperText={errors.name ? errors.name.message : null}
-                                                color={errors.name ? 'secondary' : 'primary'}
-                                            />
-                                        }
-                                    />
                                     <Controller
                                         name="email"
                                         ref={register}
@@ -144,21 +102,15 @@ export const SignUp = () => {
                                         }
                                     />
 
-                                    <Button className="btn-blue" type="submit"  fullWidth size="medium" variant="contained">
+                                    <Button className="btn-blue" type="submit" fullWidth size="medium" variant="contained">
                                         Далее
                                     </Button>
                                 </form>
                             </CardContent>
-                            <CardActions>
-                                <GoogleLoginButton onClick={signInGoogle}>
-                                </GoogleLoginButton>
-
-                            </CardActions>
                         </Card>
                     </Grid>
                 </Grid>
             </section>
         </>
-
     )
 }

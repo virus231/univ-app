@@ -1,13 +1,11 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit';
-import counterReducer from '../redux/counter/counterSlice';
-import {authSlice} from '../redux/auth/authSlice'
+import {authSlice} from './reducers/authSlice'
 import thunk from 'redux-thunk';
 import logger from 'redux-logger'
 
 
 export const store = configureStore({
   reducer: {
-    counter: counterReducer,
     auth: authSlice.reducer
   },
   middleware: [logger, thunk]

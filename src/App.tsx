@@ -1,4 +1,4 @@
-import React, {lazy, Suspense, useEffect} from 'react';
+import React, {lazy, Suspense} from 'react';
 import {
   Switch,
   Route,
@@ -8,7 +8,7 @@ import {Header} from './components/Header/Header'
 import { Home } from './pages/Home';
 import Backdrop from '@material-ui/core/Backdrop';
 import { useSelector } from 'react-redux'
-import { authSelector } from './redux/auth/selectors';
+import { authSelector } from './redux/selectors';
 import { ToastContainer } from 'react-toastify';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import "react-toastify/scss/main.scss"
@@ -27,8 +27,8 @@ const useStyles = makeStyles((theme: Theme) =>
     }),
 );
 
-const SignUp = lazy(() => import('./redux/auth/SignUp/SignUp').then(({ SignUp }) => ({ default: SignUp })))
-const LogIn = lazy(() => import('./redux/auth/LogIn/LogIn').then(({ LogIn }) => ({ default: LogIn })))
+const SignUp = lazy(() => import('./pages/SignUp/SignUp').then(({ SignUp }) => ({ default: SignUp })))
+const LogIn = lazy(() => import('./pages/LogIn/L    ogIn').then(({ LogIn }) => ({ default: LogIn })))
 const Profile = lazy(() => import('./pages/Profile/Profile').then(({ Profile }) => ({ default: Profile })))
 
 function App(props: any) {

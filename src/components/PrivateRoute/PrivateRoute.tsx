@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { useSelector } from 'react-redux';
 import { Route, Redirect, RouteProps } from 'react-router-dom';
-import {authSelector} from "../../redux/auth/selectors";
+import {authSelector} from "../../redux/selectors";
 
 
 interface Props extends RouteProps {

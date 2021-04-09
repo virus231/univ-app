@@ -1,7 +1,7 @@
 import {AuthResponse} from "../../utils/interfaces";
 import {createSlice} from "@reduxjs/toolkit";
-import {loginUser, logoutUser, registerUser, signInWithGoogle} from './thunks'
-import {setUser, setName} from './actions'
+import {loginUser, logoutUser, registerUser, signInWithGoogle} from '../actions/thunks'
+import {setUser, setName} from '../actions/actions'
 
 const initialState: AuthResponse = {
     email: '',
